@@ -1,5 +1,5 @@
 export class Route {
-  path: string[];
+  private path: string[];
 
   constructor() {
     this.path = new Array(0);
