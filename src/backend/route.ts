@@ -1,20 +1,38 @@
+import chalk from "chalk";
+import { ServerResponse } from "http";
+import { Endpoint, METHOD_TYPE } from "../types";
+
 export class Route {
-  private path: string[];
+  private endpoints: Endpoint[];
 
   constructor() {
-    this.path = new Array(0);
+    this.endpoints = new Array(0);
   }
 
-  add = (path: string): void => {
+  add = (endpoint: Endpoint): void => {
     // regexp
-    this.path.push(path);
+    this.endpoints.push(endpoint);
   }
 
   reset = (): void => {
-    this.path = new Array(0);
+    this.endpoints = new Array(0);
   }
 
-  judge = (path: string): boolean => {
-    return this.path.includes(path);
+  hasRoute = (path: string, method: METHOD_TYPE): boolean => {
+    const endpoint = this.endpoints.find(x => x.path === path);
+    if(endpoint === undefined) {
+      return false;
+    }
+    return !!endpoint.methods.find(x => x.type === method);
+  }
+
+  routing = (path: string, method: METHOD_TYPE, res: ServerResponse): void => {
+    if(!this.hasRoute(path, method)) {
+      console.log(chalk.red(""));
+      return;
+    }
+    const endpoint = this.endpoints.find(x => x.path === path);
+    const _method = endpoint?.methods.find(x => x.type === method);
+    res.end();
   }
 }
