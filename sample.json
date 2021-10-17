@@ -1,0 +1,36 @@
+{
+  "version": 0.1,
+  "sample/ping": {
+    "GET": {
+      "responses": [
+        {
+          "code": 200,
+          "body": "pong"
+        },
+        {
+          "code": 404
+        }
+      ]
+    }
+  },
+  "sample/users": {
+    "GET": {
+      "responses": [
+        {
+          "code": 200,
+          "body": "ok"
+        }
+      ]
+    }
+  },
+  "sample/user": {
+    "POST": {
+      "responses": [
+        {
+          "code": 201,
+          "body": "ok"
+        }
+      ]
+    }
+  }
+}
