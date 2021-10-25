@@ -4,20 +4,17 @@ export interface ConfigJson {
 
 export interface Endpoint {
   path: string;
-  methods: Method[];
+  methods: Method;
 }
 
-interface Method {
-  type: METHOD_TYPE;
-  param: string[];
-  query: string[];
-  body: Record<string, unknown>;
-  responses: Response[];
-}
+type Method = {
+  [x in METHOD_TYPE]: Response[];
+};
 
 interface Response {
-  code: string;
+  code: number;
   body: Record<string, unknown>;
+  enable: boolean;
 }
 
 const METHOD_TYPE = {

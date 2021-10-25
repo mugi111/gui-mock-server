@@ -23,7 +23,7 @@ export class Route {
     if(endpoint === undefined) {
       return false;
     }
-    return !!endpoint.methods.find(x => x.type === method);
+    return Object.keys(endpoint.methods).includes(method);
   }
 
   routing = (path: string, method: METHOD_TYPE, res: ServerResponse): void => {
@@ -31,8 +31,18 @@ export class Route {
       console.log(chalk.red(""));
       return;
     }
-    const endpoint = this.endpoints.find(x => x.path === path);
-    const _method = endpoint?.methods.find(x => x.type === method);
-    res.end();
+    const _path = this.endpoints.find(x => x.path === path);
+    if(!_path) {
+      return;
+    }
+    let r = undefined;
+    for (const v of Object.values(_path.methods)) {
+      r = v.find(x => x.enable);
+    }
+    if(!r) {
+      return;
+    }
+    res.statusCode = r.code || 500;
+    res.end(r.body);
   }
 }
